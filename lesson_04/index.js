@@ -21,12 +21,12 @@
 
 {
     const item = prompt('Наименование товара');
-    const count = prompt('Количество товара');
+    const count = +prompt('Количество товара');
     const category = prompt('Категория товара');
-    const price = prompt('Цена товара');
+    const price = +prompt('Цена товара');
     const total = price * count;
 
-    if(total > 0){
+    if(!Number.isNaN(total)){
         console.log(`
             На складе ${count} единицы товара "${item}" на сумму ${total} деревянных
         `);
