@@ -30,8 +30,7 @@ if(rain === 1){
 
 //! - Задача 4
 {
-    // const withdraw = +prompt('Сколько денег вы хотите снять? ');
-    const withdraw = 1100;
+    const withdraw = +prompt('Сколько денег вы хотите снять? ');
 
     if(withdraw % 100 === 0){
         console.log(`Ваши ${withdraw}₽ готовы к выдаче!`);
