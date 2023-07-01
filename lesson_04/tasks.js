@@ -12,6 +12,7 @@ if(rain === 1){
 */
 
 // ! - Задача 3
+/*
 {
     let total = 0;
 
@@ -23,5 +24,18 @@ if(rain === 1){
         console.log('Поздравляю, вы поступили на бюджет!');
     }else{
         console.log('Вы не готовы!');
+    }
+}
+*/
+
+//! - Задача 4
+{
+    // const withdraw = +prompt('Сколько денег вы хотите снять? ');
+    const withdraw = 1100;
+
+    if(withdraw % 100 === 0){
+        console.log(`Ваши ${withdraw}₽ готовы к выдаче!`);
+    }else{
+        console.log('Пожалуйста введите сумму кратную 100! ');
     }
 }
