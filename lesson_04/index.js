@@ -19,18 +19,18 @@
 }
 */
 
-{
-    const item = prompt('Наименование товара');
-    const count = +prompt('Количество товара');
-    const category = prompt('Категория товара');
-    const price = +prompt('Цена товара');
-    const total = price * count;
+// {
+//     const item = prompt('Наименование товара');
+//     const count = +prompt('Количество товара');
+//     const category = prompt('Категория товара');
+//     const price = +prompt('Цена товара');
+//     const total = price * count;
 
-    if(!Number.isNaN(total)){
-        console.log(`
-            На складе ${count} единицы товара "${item}" на сумму ${total} деревянных
-        `);
-    }else{
-        console.warn('Вы ввели некорректные данные');
-    }
-}
+//     if(!Number.isNaN(total)){
+//         console.log(`
+//             На складе ${count} единицы товара "${item}" на сумму ${total} деревянных
+//         `);
+//     }else{
+//         console.warn('Вы ввели некорректные данные');
+//     }
+// }
