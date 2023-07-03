@@ -75,7 +75,7 @@
         tax += (income - 15000) * 0.2;
         income -=income -15000;
     }
-    if(income < 15000 && income > 0){
+    if(income > 0){
         tax += income * 0.13;
     }
     console.log(`
@@ -86,3 +86,22 @@
     //     return income * percent;
     // }
 }
+
+// ! - Ещё один вариант
+// {
+//     let income = +prompt('Введите ваш месячный доход.');
+
+//     let tax = 0;
+    
+//     if (income <= 15000) {
+//         tax = income * 0.13;
+//     } else if (income <= 50000) {
+//         tax = 15000 * 0.13 + (income - 15000) * 0.2;
+//     } else {
+//         tax = 15000 * 0.13 + 35000 * 0.2 + (income - 50000) * 0.3;
+//     }
+    
+//     console.log(`
+//         Ваш налог составляет  ${tax} ₽
+//     `);
+// }
