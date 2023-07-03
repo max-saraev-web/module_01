@@ -29,7 +29,7 @@
         deduction = 0.2;
         tax = taxCalc(income, deduction);
 
-    }else if( income > 500000){
+    }else if( income > 50000){
         
         deduction = 0.3;
         tax = taxCalc(income, deduction);
