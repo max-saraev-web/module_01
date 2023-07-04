@@ -23,50 +23,7 @@
     let income = +prompt('Введите ваш месячный доход.');
 
     let tax = 0;
-    /* let extraIncome = 0;
-    let taxableIncome = 0; */
 
-    // if(income <= 15000){
-        
-    //     let deduction = 0.13;
-    //     tax = taxCalc(income, deduction);
-
-    //     console.log(`
-    //         Уважаемый клиент, за этот месяц вы заработали ${income}, сумма вашего налога    составляет ${tax}, а в процентах это ${deduction * 100}%. 
-
-    //         Хорошего вам дня!
-    //     `);
-    // } else if(income > 15000 && income <= 50000){
-
-    //     let deduction = 0.13;
-    //     tax = taxCalc(income, deduction);
-
-    //     let extraDeduction = 0.2;
-    //     extraIncome = income - 15000;
-
-    //     taxableIncome = taxCalc(extraIncome, extraDeduction);
-
-    //     console.log(`
-    //         Уважаемый клиент, за этот месяц вы заработали ${income}, сумма вашего налога  составляет ${tax + taxableIncome}. 
-
-    //         Хорошего вам дня!
-    //     `);
-    // } else if(income > 50000){
-        
-    //     let deduction = 0.13;
-    //     tax = taxCalc(income, deduction);
-
-    //     let extraDeduction = 0.3;
-    //     extraIncome = income - 15000;
-
-    //     taxableIncome = taxCalc(extraIncome, extraDeduction);
-
-    //     console.log(`
-    //         Уважаемый клиент, за этот месяц вы заработали ${income}, сумма вашего налога  составляет ${tax + taxableIncome}. 
-
-    //         Хорошего вам дня!
-    //     `);
-    // }
     if(income > 50000){
         tax += (income - 50000) * 0.3;
         income -=income -50000;
