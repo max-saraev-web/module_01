@@ -1,11 +1,12 @@
 'use strict';
 
 const isPrime = (n) =>{
-    if(Math.round(n) === n && n % n === 0){
-        return true;
-    }else{
-        return false;
+    for(let k = n; Math.round(k) === k && k % k === 0; k = true){
+        if(k){
+            return true;
+        } 
     }
+    return false;
 };
 
 console.log(isPrime(151));
