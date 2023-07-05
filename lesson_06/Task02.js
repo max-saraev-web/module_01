@@ -1,12 +1,17 @@
 'use strict';
 
-const isPrime = (n) =>{
-    for(let k = n; Math.round(k) === k && k % k === 0; k = true){
-        if(k){
-            return true;
-        } 
+const isPrime = n => {
+    if (n < 2) {
+        return false;
     }
-    return false;
+
+    for (let i = 2; i <= Math.sqrt(n); i++) {
+        if (n % i === 0) {
+            return false;
+        }
+    }
+
+    return true;
 };
 
-console.log(isPrime(151));
+console.log(isPrime(4));
