@@ -1,8 +1,8 @@
 'use strict';
 
 // Получение чисел от пользователя
-const number1 = +prompt("Введите первое число:");
-const number2 = +prompt("Введите второе число:");
+const number1 = prompt("Введите первое число:");
+const number2 = prompt("Введите второе число:");
 
 // Функция для нахождения минимального числа
 function findMinimum(a, b) {
