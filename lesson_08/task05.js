@@ -53,7 +53,7 @@ const numberBot = (bot, user) =>{
             text-align: center;
             color: red;
         `;
-        return ;
+        return;
     }
 };
 let userNum = prompt('Введите ваш вариант отгадки!');

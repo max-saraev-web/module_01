@@ -1,22 +1,49 @@
 'use strict';
 
 const generator = (total, n, m, evenOdd) => {
+    
+    const arr = [];
 
-    const newArr = [];
+    const functions = {
+        random(min, max){
+            return Math.round(Math.random() * (max - min) + min);
+        },
+        isOdd(num){
+            return num % 2 === 0 ? true : false;
+        },
+    };
 
-    for (let i = 0; i < total; i++) {
-        newArr.push(Math.round(Math.random() * (m - n) + n));        
-    }
+    let {random, isOdd} = functions;
 
-    let sortedArr = [];
 
-    if (evenOdd % 2 === 0) {
-        sortedArr = newArr.filter((n) => n % 2 === 0);
-    }
-    if(evenOdd % 2 !== 0){
-        sortedArr = newArr.filter((n) => n % 2 !== 0);
-    }
-    return sortedArr;
+    const adder = arr => {
+
+        if(arr.length === total){
+            return;
+        }
+
+        if(!(arr.length === total)){
+
+            const randomNumber = random(n, m);
+
+            if(evenOdd === 'odd'){
+                if(!isOdd(randomNumber)){
+                    arr.push(randomNumber);
+                    return adder(arr);
+                }
+            }else if(evenOdd === 'even'){
+                if(isOdd(randomNumber)){
+                    arr.push(randomNumber);
+                    return adder(arr);
+                }
+            } else{
+                arr.push(randomNumber);
+            }
+            return adder(arr);
+        }
+    };
+    adder(arr);
+    return arr;
 };
 
-console.log(generator(15, -5, 40, 3));
+console.log(generator(15, -5, 40, 'even'));

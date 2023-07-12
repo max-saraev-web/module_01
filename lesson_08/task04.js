@@ -1,5 +1,4 @@
-'use strict';
-// ! - формула нахождения весокостного года 
+'use strict'; 
 
 
 const generator = (n, m) => {
