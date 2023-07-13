@@ -1,42 +1,50 @@
-'use strict'; 
-// ! - условие нахождение високосного года 
-// n % 4 === 0 && (n % 100 !== 0 || n % 400 === 0
+'use strict';
 
 const generator = (n, m) => {
-
     const functions = {
-        getRange(min, max){
-            if(min === max){
+        getRange(min, max) {
+            if (min === max) {
                 return 1;
             }
             return 1 + getRange(min + 1, max);
         },
-        isLeap(num){
-            return num % 4 === 0 && (num % 100 !== 0 || num % 400 === 0) ? true : false;
+        isLeap(num) {
+            return num % 4 === 0 && (num % 100 !== 0 || num % 400 === 0);
+        },
+        getYears(start, end) {
+            const negative = [];
+            const positive = [];
+
+            for (let i = start; i <= end; i++) {
+                if (i <= 0) {
+                    negative.push(i);
+                } else {
+                    positive.push(i);
+                }
+            }
+
+            const yearList = [...negative, ...positive];
+            return yearList;
         },
     };
 
-    const{getRange, isLeap} = functions;
+    const { getRange, isLeap, getYears } = functions;
 
     const range = getRange(n, m);
-
+    const years = getYears(n, m);
     const arr = [];
 
-    const getYear = (range) => {
-        let step = range;
-        if(step === 0){
+    const getYear = (range, years) => {
+        if (range === 0) {
             return;
-        }else if ((isLeap(step))){
-            arr.push(step);
-            return getYear(step - 1);
-        }else{
-            return getYear(step - 1);
+        } else if (isLeap(years[range - 1])) {
+            arr.push(years[range - 1]);
         }
-    }
+        return getYear(range - 1, years);
+    };
 
-
-    getYear(range)
+    getYear(range, years);
     return arr;
 };
 
-console.log(generator(1764, 2024));
+console.log(generator(-1900, 1900));
