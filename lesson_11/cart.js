@@ -4,7 +4,6 @@ import {listIPv4 as ip} from './ipv4.js';
 
 const cart = {
   items: [],
-  // total: 0,
   count: 0,
   get totalPrice() {
     return `Общаяя стоймость товаров ${this.calculateItemPrice()}`;
