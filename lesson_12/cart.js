@@ -1,19 +1,19 @@
 const cart = {
   items: [],
   count: 0,
-  discount: 0,
+  _discount: 0,
   // ! - Установка скидки
   get setDiscount() {
-    return this.discount;
+    return this._discount;
   },
   set setDiscount(promo) {
     if (typeof promo === 'string') {
       switch (promo) {
         case 'METHED':
-          this.discount = 15;
+          this._discount = 15;
           break;
         case 'NEWYEAR':
-          this.discount = 21;
+          this._discount = 21;
           break;
       }
     }
@@ -22,13 +22,15 @@ const cart = {
     return `Общаяя стоймость товаров ${this.calculateItemPrice()}`;
   },
   calculateItemPrice() {
-    if (this.discount) {
+    if (this._discount) {
       const allItems = this.items
-        .reduce((acc, current) => acc + current.itemPrice, 0);
-      return allItems * (1 - this.discount / 100);
+        .reduce((acc, current) =>
+          acc + current.itemPrice * current.itemCount, 0);
+      return allItems * (1 - this._discount / 100);
     }
     return this.items
-      .reduce((acc, current) => acc + current.itemPrice, 0);
+      .reduce((acc, current) =>
+        acc + current.itemPrice * current.itemCount, 0);
   },
   add(itemName, itemPrice, itemCount = 1) {
     const newItem = {
@@ -46,6 +48,7 @@ const cart = {
   clear() {
     this.items = [];
     this.count = 0;
+    this._discount = 0;
   },
   print() {
     console.log(
@@ -55,11 +58,11 @@ const cart = {
   },
 };
 
-cart.add('сок добрый - апельсин', 35);
+cart.add('сок добрый - апельсин', 40, 3);
 cart.add('сок добрый - манго', 35);
 cart.add('сок добрый - томат', 35);
 
-// cart.setDiscount = 'NEWYEAR';
+cart.setDiscount = 'NEWYEAR';
 // cart.setDiscount = 'METHED';
 cart.print();
 console.log(cart);
