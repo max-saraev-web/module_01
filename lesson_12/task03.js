@@ -1,24 +1,23 @@
 const rect = {
-  x: 5,
-  y: 5,
-  get width() {
-    return `${this.x}см`;
+  _x: 5,
+  _y: 5,
+  get perimeter() {
+    return `${2 * (this._x + this._y)} см`;
   },
-  get height() {
-    return `${this.y}см`;
+  get area() {
+    return `${this._y * this._x} см`;
   },
   set width(x) {
     if (typeof x === 'number') {
-      this.x = x;
+      this._x = x;
     }
   },
   set height(y) {
     if (typeof y === 'number') {
-      this.y = y;
+      this._y = y;
     }
   },
 };
 
-// rect.width = 40;
-// rect.height = 40;
-console.log(rect.width, rect.height);
+rect.height = 20;
+console.log(rect.perimeter, rect.area);
