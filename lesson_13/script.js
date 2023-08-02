@@ -1,6 +1,6 @@
 'use strict';
 const {game} = window.RSP;
 
-const startGame = game('en');
+const startGame = game();
 
 startGame();

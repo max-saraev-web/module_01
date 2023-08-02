@@ -54,7 +54,7 @@ const numberBot = (bot, user) => {
             color: red;
         `;
     return;
-  }
+}
 };
 const userNum = prompt('Введите ваш вариант отгадки!');
 

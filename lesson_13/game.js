@@ -11,9 +11,13 @@ window.RSP = (() => {
         'paper',
       ],
       messages: {
-        tie: 'tie',
-        won: ' you won',
-        lost: 'you lost',
+        tie: 'tie !',
+        won: ' you won !',
+        lost: 'you lost !',
+        pc: 'computer',
+        user: 'you',
+        total: 'the total score is: ',
+        playMore: 'Do you want to keep playing ?',
       },
     },
     ru: {
@@ -26,6 +30,10 @@ window.RSP = (() => {
         tie: 'ничья',
         won: 'вы выиграли',
         lost: 'вы проиграли',
+        pc: 'Компьютер',
+        user: 'вы',
+        total: 'итоговый счёт: ',
+        playMore: 'Вы хотите продолжить игру ?',
       },
     },
   };
@@ -36,19 +44,26 @@ window.RSP = (() => {
     return Math.floor(Math.random() * (max - min + 1) + min);
   };
 
-  const game = (lang = 'ru') => {
+  const game = language => {
+    const lang = language === 'EN' || language === 'ENG' ?
+      'en' : 'ru';
+
     const result = {
       player: 0,
       computer: 0,
     };
-    // ? Деструктуризация
+
     const {[lang]: {
       figures,
       messages: {
         tie,
         won,
-        lost
-      }
+        lost,
+        pc,
+        user,
+        total,
+        playMore,
+      },
     },
     } = LANGUAGE;
 
@@ -56,22 +71,87 @@ window.RSP = (() => {
       const minNum = 0;
       const maxNum = figures.length - 1;
 
-      const pcTurn = figures[getRandomIntInclusive(minNum, maxNum)];
-      console.log('pcTurn: ', pcTurn);
+      let pcTurn = getRandomIntInclusive(minNum, maxNum);
+      const pcFigure = figures[pcTurn];
 
+      if (result.player + result.computer > 1) {
+        const anotherGame = confirm(`
+          ${playMore}
+        `);
+
+        if (anotherGame) {
+          game();
+        } else {
+          alert(`
+          ${total}
+          ${pc}: ${result.computer}
+          ${user}: ${result.player}
+        `);
+          return null;
+        }
+      }
       // ! игра
       const userTurn = prompt(figures + ' ?');
 
-      if (pcTurn.startsWith(userTurn)) {
-        alert(tie);
+      let expanedStr;
+      const getFigure = figures.forEach((elem, i) => {
+        if (elem.startsWith(userTurn)) {
+          expanedStr = elem;
+        }
+      });
+
+      const userFigureNum = figures.findIndex((i) => {
+        const sample = expanedStr;
+
+        if (sample === i) {
+          return i;
+        }
+      });
+
+      const userFigure = figures[userFigureNum];
+
+      if (pcTurn === userFigureNum) {
+        alert(
+          `
+          ${pc}: ${pcFigure}
+          ${user}: ${userFigure}
+          ${tie}
+          `,
+        );
+        result.player += 1;
+        result.computer += 1;
+        return start();
       }
 
-      if (pcTurn.startsWith(userTurn)) {
-        alert(won);
-      }
-
-      if (pcTurn.startsWith(userTurn)) {
-        alert(won);
+      if ((pcTurn === 0 && userFigureNum === 1) ||
+      (pcTurn === 1 && userFigureNum === 2) ||
+      (pcTurn === 2 && userFigureNum === 0)) {
+        alert(
+          `
+          ${pc}: ${pcFigure}
+          ${user}: ${userFigure}
+          ${lost}
+          `,
+        );
+        result.computer += 1;
+        return start();
+      } else if (userFigureNum < 0) {
+        alert(`
+          ${total}
+          ${pc}: ${result.computer}
+          ${user}: ${result.player}
+        `);
+        return null;
+      } else {
+        alert(
+          `
+          ${pc}: ${pcFigure}
+          ${user}: ${userFigure}
+          ${won}
+          `,
+        );
+        result.player += 1;
+        return start();
       }
     };
   };
