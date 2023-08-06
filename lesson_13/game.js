@@ -71,7 +71,7 @@ window.RSP = (() => {
       const minNum = 0;
       const maxNum = figures.length - 1;
 
-      let pcTurn = getRandomIntInclusive(minNum, maxNum);
+      const pcTurn = getRandomIntInclusive(minNum, maxNum);
       const pcFigure = figures[pcTurn];
 
       if (result.player + result.computer > 1) {
@@ -91,14 +91,26 @@ window.RSP = (() => {
         }
       }
       // ! игра
-      const userTurn = prompt(figures + ' ?');
+      let userTurn = prompt(figures + ' ?');
 
       let expanedStr;
-      const getFigure = figures.forEach((elem, i) => {
+      figures.forEach(elem => {
         if (elem.startsWith(userTurn)) {
           expanedStr = elem;
         }
       });
+
+      if (typeof expanedStr === 'undefined' || userTurn.trim() === '') {
+        userTurn = prompt(figures + ' ?');
+
+        figures.forEach(elem => {
+          if (elem.startsWith(userTurn)) {
+            expanedStr = elem;
+          }
+        });
+
+        return start();
+      }
 
       const userFigureNum = figures.findIndex((i) => {
         const sample = expanedStr;
