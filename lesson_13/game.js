@@ -66,7 +66,7 @@ window.RSP = (() => {
       },
     },
     } = LANGUAGE;
-
+    
     return function start() {
       const minNum = 0;
       const maxNum = figures.length - 1;
@@ -99,8 +99,8 @@ window.RSP = (() => {
           expanedStr = elem;
         }
       });
-
-      if (typeof expanedStr === 'undefined' || userTurn.trim() === '') {
+      
+      while (typeof expanedStr === 'undefined' || userTurn.trim() === '') {
         userTurn = prompt(figures + ' ?');
 
         figures.forEach(elem => {
@@ -108,8 +108,6 @@ window.RSP = (() => {
             expanedStr = elem;
           }
         });
-
-        return start();
       }
 
       const userFigureNum = figures.findIndex((i) => {
