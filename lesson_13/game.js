@@ -28,6 +28,7 @@ window.RSP = (() => {
       ],
       messages: {
         tie: 'ничья',
+        conjugatedTie: 'Раундов в ничью',
         won: 'вы выиграли',
         lost: 'вы проиграли',
         pc: 'Компьютер',
@@ -51,6 +52,7 @@ window.RSP = (() => {
     const result = {
       player: 0,
       computer: 0,
+      tie: 0,
     };
 
     const {[lang]: {
@@ -63,10 +65,10 @@ window.RSP = (() => {
         user,
         total,
         playMore,
+        conjugatedTie,
       },
     },
     } = LANGUAGE;
-    
     return function start() {
       const minNum = 0;
       const maxNum = figures.length - 1;
@@ -86,6 +88,7 @@ window.RSP = (() => {
           ${total}
           ${pc}: ${result.computer}
           ${user}: ${result.player}
+          ${lang === 'en' ? tie : conjugatedTie} : ${result.tie}
         `);
           return null;
         }
@@ -101,13 +104,14 @@ window.RSP = (() => {
       });
       
       while (typeof expanedStr === 'undefined' || userTurn.trim() === '') {
+        if (userTurn === null) break;
         userTurn = prompt(figures + ' ?');
 
         figures.forEach(elem => {
           if (elem.startsWith(userTurn)) {
             expanedStr = elem;
           }
-        });
+        }); 
       }
 
       const userFigureNum = figures.findIndex((i) => {
@@ -120,6 +124,16 @@ window.RSP = (() => {
 
       const userFigure = figures[userFigureNum];
 
+      if (userTurn === null){
+        alert(`
+          ${total}
+          ${pc}: ${result.computer}
+          ${user}: ${result.player}
+          ${lang === 'en' ? tie : conjugatedTie} : ${result.tie}
+        `);
+        return null;
+      }
+
       if (pcTurn === userFigureNum) {
         alert(
           `
@@ -128,11 +142,10 @@ window.RSP = (() => {
           ${tie}
           `,
         );
-        result.player += 1;
-        result.computer += 1;
+        result.tie += 1;
         return start();
       }
-
+      
       if ((pcTurn === 0 && userFigureNum === 1) ||
       (pcTurn === 1 && userFigureNum === 2) ||
       (pcTurn === 2 && userFigureNum === 0)) {
@@ -150,6 +163,7 @@ window.RSP = (() => {
           ${total}
           ${pc}: ${result.computer}
           ${user}: ${result.player}
+          ${lang === 'en' ? tie : conjugatedTie} : ${result.tie}
         `);
         return null;
       } else {
