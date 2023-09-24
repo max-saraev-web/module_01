@@ -102,7 +102,7 @@ window.RSP = (() => {
           expanedStr = elem;
         }
       });
-      
+
       while (typeof expanedStr === 'undefined' || userTurn.trim() === '') {
         if (userTurn === null) break;
         userTurn = prompt(figures + ' ?');
@@ -111,7 +111,7 @@ window.RSP = (() => {
           if (elem.startsWith(userTurn)) {
             expanedStr = elem;
           }
-        }); 
+        });
       }
 
       const userFigureNum = figures.findIndex((i) => {
@@ -124,7 +124,7 @@ window.RSP = (() => {
 
       const userFigure = figures[userFigureNum];
 
-      if (userTurn === null){
+      if (userTurn === null) {
         alert(`
           ${total}
           ${pc}: ${result.computer}
@@ -145,7 +145,7 @@ window.RSP = (() => {
         result.tie += 1;
         return start();
       }
-      
+
       if ((pcTurn === 0 && userFigureNum === 1) ||
       (pcTurn === 1 && userFigureNum === 2) ||
       (pcTurn === 2 && userFigureNum === 0)) {
