@@ -62,7 +62,7 @@ window.MARBLE = (() => {
       поставить на кон!
       В данный момент вы можете поставить от 1 до ${u}
           `);
-      while (!isNan(userTurn)) {
+      while (!isNan(userTurn) || +userTurn < 0 || +userTurn > u) {
         if (userTurn === null) break;
 
         userTurn = prompt(`Введите количество шариков которые хотите
