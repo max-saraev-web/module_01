@@ -8,6 +8,23 @@ window.MARBLE = (() => {
     user: 'вы',
     total: 'итоговый счёт: ',
     playMore: 'Вы хотите продолжить игру ?',
+    RSP: {
+      figures: [
+        'камень',
+        'ножницы',
+        'бумага',
+      ],
+      messages: {
+        tie: 'ничья',
+        conjugatedTie: 'Раундов в ничью',
+        won: 'вы выиграли и теперь ходите первым!',
+        lost: 'вы проиграли, теперь бот ходит первым!',
+        pc: 'Компьютер',
+        user: 'вы',
+        total: 'итоговый счёт: ',
+        playMore: 'Вы хотите продолжить игру ?',
+      },
+    },
   };
 
   // * - Возвращает число если передать число или null если не число
@@ -21,8 +38,8 @@ window.MARBLE = (() => {
 
   const random = (min = 1, max = 2) =>
     Math.round(Math.random() * (max - min) + min);
-  const isOdd = num => (num % 2 === 0);
 
+  const isOdd = num => num % 2 === 0;
 
   const game = (user = 5, bot = 5) => {
     const balance = {
@@ -30,6 +47,96 @@ window.MARBLE = (() => {
       currentBot: bot,
     };
 
+    let counter = 1;
+    let rspCounter = 0;
+
+    const rsp = () => {
+      const minNum = 0;
+      const maxNum = MESSAGES.RSP.figures.length - 1;
+
+      const pcTurn = random(minNum, maxNum);
+      const pcFigure = MESSAGES.RSP.figures[pcTurn];
+
+      let userTurn = prompt(MESSAGES.RSP.figures + ' ?');
+
+      let expanedStr;
+      MESSAGES.RSP.figures.forEach(elem => {
+        if (elem.startsWith(userTurn)) {
+          expanedStr = elem;
+        }
+      });
+
+      while (typeof expanedStr === 'undefined' || userTurn.trim() === '') {
+        if (userTurn === null) break;
+        userTurn = prompt(figures + ' ?');
+
+        figures.forEach(elem => {
+          if (elem.startsWith(userTurn)) {
+            expanedStr = elem;
+          }
+        });
+      }
+
+      const userFigureNum = MESSAGES.RSP.figures.findIndex((i) => {
+        const sample = expanedStr;
+
+        if (sample === i) {
+          return i;
+        }
+      });
+
+      const userFigure = MESSAGES.RSP.figures[userFigureNum];
+
+      if (pcTurn === userFigureNum) {
+        alert(
+          `
+          ${MESSAGES.RSP.messages.pc}: ${pcFigure}
+          ${MESSAGES.RSP.messages.user}: ${userFigure}
+          ${MESSAGES.RSP.messages.tie}
+          `,
+        );
+        return rsp();
+      }
+
+      if ((pcTurn === 0 && userFigureNum === 1) ||
+      (pcTurn === 1 && userFigureNum === 2) ||
+      (pcTurn === 2 && userFigureNum === 0)) {
+        alert(
+          `
+          ${MESSAGES.RSP.messages.pc}: ${pcFigure}
+          ${MESSAGES.RSP.messages.user}: ${userFigure}
+          ${MESSAGES.RSP.messages.lost}
+          `,
+        );
+
+        counter++;
+        return;
+      } else {
+        alert(
+          `
+          ${MESSAGES.RSP.messages.pc}: ${pcFigure}
+          ${MESSAGES.RSP.messages.user}: ${
+            typeof userFigure === 'undefined' ? 'победили' : userFigure}
+          ${MESSAGES.RSP.messages.won}
+          `,
+        );
+        return;
+      }
+    };
+
+    const oneMoreGame = thisFn => {
+      const confirmed = confirm(`
+        Сыграем ещё разок?
+      `);
+
+      if (confirmed === true) {
+        counter = 1;
+        rspCounter = 0;
+        balance.currentUser = user;
+        balance.currentBot = bot;
+        thisFn();
+      }
+    };
     const start = () => {
       const {currentUser: u, currentBot: b} = balance;
 
@@ -46,7 +153,7 @@ window.MARBLE = (() => {
           Помер!
           У вас не осталось шариков!
         `);
-        return;
+        return oneMoreGame(start);
       }
 
       if (b <= 0) {
@@ -54,47 +161,77 @@ window.MARBLE = (() => {
           SkyNet повержен!
           У бота не осталось шариков!
         `);
-        return;
+        return oneMoreGame(start);
       }
 
-      // ! ход пользователя
-      let userTurn = prompt(`Введите количество шариков которые хотите
-      поставить на кон!
-      В данный момент вы можете поставить от 1 до ${u}
-          `);
-      while (!isNan(userTurn) || +userTurn < 0 || +userTurn > u) {
-        if (userTurn === null) break;
-
-        userTurn = prompt(`Введите количество шариков которые хотите
-        поставить на кон!
-        В данный момент вы можете поставить от 1 до ${u}
-            `);
+      if (rspCounter === 0) {
+        rsp();
+        rspCounter++;
       }
-      const userOdd = isOdd(+userTurn);
-
-      // ! ход бота
-      const botTurn = isOdd(random());
 
       // ? - Угадай-ка )
-      if (userTurn === null) {
-        return;
-      }
 
-      if (userTurn > 0) {
-        if (botTurn === userOdd) {
-          balance.currentUser -= +userTurn;
-          balance.currentBot += +userTurn;
+      if (!isOdd(counter)) {
+        let userNum = prompt(`
+          Введите количество шариков которые хотите
+          поставить на кон!
+          В данный момент вы можете поставить от 1 до ${u}
+          `);
+
+        while (!isNan(userNum) || +userNum < 0 || +userNum > u) {
+          if (userNum === null) break;
+
+          userNum = prompt(`Введите количество шариков которые хотите
+          поставить на кон!
+          В данный момент вы можете поставить от 1 до ${u}
+              `);
+        }
+
+        const userOdd = isOdd(+userNum);
+
+        const botBet = isOdd(random());
+        console.log('botBet: ', botBet);
+
+        if (userNum === null) {
+          oneMoreGame(start);
+        }
+
+        counter++;
+
+        if (userOdd === botBet) {
+          balance.currentUser -= +userNum;
+          balance.currentBot += +userNum;
           return start();
         } else {
-          balance.currentUser += +userTurn;
-          balance.currentBot -= +userTurn;
+          balance.currentUser += +userNum;
+          balance.currentBot -= +userNum;
+          return start();
+        }
+      } else {
+        const botNum = random(1, b);
+
+        const userBet = confirm(`
+          Число чётное?
+        `);
+
+        counter++;
+
+        if (userBet === isOdd(botNum)) {
+          balance.currentUser += +botNum;
+          balance.currentBot -= +botNum;
+          return start();
+        } else {
+          balance.currentUser -= +botNum;
+          balance.currentBot += +botNum;
           return start();
         }
       }
     };
+
     return start;
   };
+
   return {
-    game,
+    game: () => game(),
   };
 })();
