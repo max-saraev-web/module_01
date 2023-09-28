@@ -49,6 +49,8 @@ window.MARBLE = (() => {
 
     let counter = 1;
     let rspCounter = 0;
+    let rspReturn = true;
+    let oneMoreGameReturn = true;
 
     const rsp = () => {
       const minNum = 0;
@@ -57,7 +59,13 @@ window.MARBLE = (() => {
       const pcTurn = random(minNum, maxNum);
       const pcFigure = MESSAGES.RSP.figures[pcTurn];
 
-      let userTurn = prompt(MESSAGES.RSP.figures + ' ?');
+      let userTurn = prompt(MESSAGES.RSP.figures + ' ?').toLowerCase();
+
+      if (userTurn === null) {
+        rspCounter++;
+        rspReturn = false;
+        return;
+      }
 
       let expanedStr;
       MESSAGES.RSP.figures.forEach(elem => {
@@ -68,7 +76,7 @@ window.MARBLE = (() => {
 
       while (typeof expanedStr === 'undefined' || userTurn.trim() === '') {
         if (userTurn === null) break;
-        userTurn = prompt(figures + ' ?');
+        userTurn = prompt(MESSAGES.RSP.figures + ' ?').toLowerCase();
 
         figures.forEach(elem => {
           if (elem.startsWith(userTurn)) {
@@ -135,8 +143,11 @@ window.MARBLE = (() => {
         balance.currentUser = user;
         balance.currentBot = bot;
         thisFn();
+      } else {
+        oneMoreGameReturn = false;
       }
     };
+
     const start = () => {
       const {currentUser: u, currentBot: b} = balance;
 
@@ -164,12 +175,15 @@ window.MARBLE = (() => {
         return oneMoreGame(start);
       }
 
-      if (rspCounter === 0) {
+      if (rspCounter === 0 && rspReturn === true) {
         rsp();
         rspCounter++;
       }
 
       // ? - Угадай-ка )
+      if (rspReturn === false || oneMoreGameReturn === false) {
+        return null;
+      }
 
       if (!isOdd(counter)) {
         let userNum = prompt(`
@@ -193,7 +207,7 @@ window.MARBLE = (() => {
         console.log('botBet: ', botBet);
 
         if (userNum === null) {
-          oneMoreGame(start);
+          return;
         }
 
         counter++;
@@ -201,10 +215,24 @@ window.MARBLE = (() => {
         if (userOdd === botBet) {
           balance.currentUser -= +userNum;
           balance.currentBot += +userNum;
+          alert(`
+            Ваша ставка проиграла!
+            ---------------------
+            Количество шариков
+            Игрок: ${balance.currentUser}
+            Бот: ${balance.currentBot}
+          `);
           return start();
         } else {
           balance.currentUser += +userNum;
           balance.currentBot -= +userNum;
+          alert(`
+            Ваша ставка выиграла!
+            --------------------
+            Количество шариков
+            Игрок: ${balance.currentUser}
+            Бот: ${balance.currentBot}
+          `);
           return start();
         }
       } else {
@@ -219,19 +247,33 @@ window.MARBLE = (() => {
         if (userBet === isOdd(botNum)) {
           balance.currentUser += +botNum;
           balance.currentBot -= +botNum;
+          alert(`
+            Ваша ставка выиграла!
+            --------------------
+            Количество шариков
+            Игрок: ${balance.currentUser}
+            Бот: ${balance.currentBot}
+          `);
           return start();
         } else {
           balance.currentUser -= +botNum;
           balance.currentBot += +botNum;
+          alert(`
+            Ваша ставка проиграла!
+            ---------------------
+            Количество шариков
+            Игрок: ${balance.currentUser}
+            Бот: ${balance.currentBot}
+          `);
           return start();
         }
       }
     };
 
-    return start;
+    return start();
   };
 
   return {
-    game: () => game(),
+    game,
   };
 })();
