@@ -36,6 +36,29 @@ window.MARBLE = (() => {
     }
   };
 
+  const getFigure = (arr, counter, trigger) => {
+    const str = prompt(arr + ' ?');
+
+    if (str === null) {
+      counter++;
+      trigger = false;
+      return;
+    }
+
+    if (str.trim() === '') {
+      return getFigure(arr, counter, trigger);
+    }
+
+    const figure = arr.indexOf(arr.find(elem =>
+      elem.startsWith(str.toLowerCase())));
+
+    if (figure >= 0) {
+      return figure;
+    } else {
+      return getFigure(arr, counter, trigger);
+    }
+  };
+
   const random = (min = 1, max = 2) =>
     Math.round(Math.random() * (max - min) + min);
 
@@ -53,53 +76,25 @@ window.MARBLE = (() => {
     let oneMoreGameReturn = true;
 
     const rsp = () => {
+      const {figures: figrs} = MESSAGES.RSP;
+
       const minNum = 0;
-      const maxNum = MESSAGES.RSP.figures.length - 1;
+      const maxNum = figrs.length - 1;
 
       const pcTurn = random(minNum, maxNum);
-      const pcFigure = MESSAGES.RSP.figures[pcTurn];
+      const pcFigure = figrs[pcTurn];
 
-      let userTurn = prompt(MESSAGES.RSP.figures + ' ?').toLowerCase();
-
-      if (userTurn === null) {
-        rspCounter++;
+      const userFigureNum = getFigure(figrs, rspCounter, rspReturn);
+      if (userFigureNum === undefined) {
         rspReturn = false;
         return;
       }
-
-      let expanedStr;
-      MESSAGES.RSP.figures.forEach(elem => {
-        if (elem.startsWith(userTurn)) {
-          expanedStr = elem;
-        }
-      });
-
-      while (typeof expanedStr === 'undefined' || userTurn.trim() === '') {
-        if (userTurn === null) break;
-        userTurn = prompt(MESSAGES.RSP.figures + ' ?').toLowerCase();
-
-        figures.forEach(elem => {
-          if (elem.startsWith(userTurn)) {
-            expanedStr = elem;
-          }
-        });
-      }
-
-      const userFigureNum = MESSAGES.RSP.figures.findIndex((i) => {
-        const sample = expanedStr;
-
-        if (sample === i) {
-          return i;
-        }
-      });
-
-      const userFigure = MESSAGES.RSP.figures[userFigureNum];
 
       if (pcTurn === userFigureNum) {
         alert(
           `
           ${MESSAGES.RSP.messages.pc}: ${pcFigure}
-          ${MESSAGES.RSP.messages.user}: ${userFigure}
+          ${MESSAGES.RSP.messages.user}: ${figrs[userFigureNum]}
           ${MESSAGES.RSP.messages.tie}
           `,
         );
@@ -112,7 +107,7 @@ window.MARBLE = (() => {
         alert(
           `
           ${MESSAGES.RSP.messages.pc}: ${pcFigure}
-          ${MESSAGES.RSP.messages.user}: ${userFigure}
+          ${MESSAGES.RSP.messages.user}: ${figrs[userFigureNum]}
           ${MESSAGES.RSP.messages.lost}
           `,
         );
@@ -124,7 +119,8 @@ window.MARBLE = (() => {
           `
           ${MESSAGES.RSP.messages.pc}: ${pcFigure}
           ${MESSAGES.RSP.messages.user}: ${
-            typeof userFigure === 'undefined' ? 'победили' : userFigure}
+            typeof figrs[userFigureNum] === 'undefined' ?
+              'победили' : figrs[userFigureNum]}
           ${MESSAGES.RSP.messages.won}
           `,
         );
