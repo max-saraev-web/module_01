@@ -8,6 +8,7 @@ window.MARBLE = (() => {
     user: 'вы',
     total: 'итоговый счёт: ',
     playMore: 'Вы хотите продолжить игру ?',
+    runOut: 'Шарики закончились!',
     RSP: {
       figures: [
         'камень',
@@ -35,6 +36,10 @@ window.MARBLE = (() => {
       return null;
     }
   };
+
+  const runOut = num => (num > 0 ?
+    num :
+    `${MESSAGES.runOut}`);
 
   const getFigure = (arr, counter, trigger) => {
     const str = prompt(arr + ' ?');
@@ -215,8 +220,8 @@ window.MARBLE = (() => {
             Ваша ставка проиграла!
             ---------------------
             Количество шариков
-            Игрок: ${balance.currentUser}
-            Бот: ${balance.currentBot}
+            Игрок: ${runOut(balance.currentUser)}
+            Бот: ${runOut(balance.currentBot)}
           `);
           return start();
         } else {
@@ -226,8 +231,8 @@ window.MARBLE = (() => {
             Ваша ставка выиграла!
             --------------------
             Количество шариков
-            Игрок: ${balance.currentUser}
-            Бот: ${balance.currentBot}
+            Игрок: ${runOut(balance.currentUser)}
+            Бот: ${runOut(balance.currentBot)}
           `);
           return start();
         }
@@ -247,8 +252,8 @@ window.MARBLE = (() => {
             Ваша ставка выиграла!
             --------------------
             Количество шариков
-            Игрок: ${balance.currentUser}
-            Бот: ${balance.currentBot}
+            Игрок: ${runOut(balance.currentUser)}
+            Бот: ${runOut(balance.currentBot)}
           `);
           return start();
         } else {
@@ -258,8 +263,8 @@ window.MARBLE = (() => {
             Ваша ставка проиграла!
             ---------------------
             Количество шариков
-            Игрок: ${balance.currentUser}
-            Бот: ${balance.currentBot}
+            Игрок: ${runOut(balance.currentUser)}
+            Бот: ${runOut(balance.currentBot)}
           `);
           return start();
         }
