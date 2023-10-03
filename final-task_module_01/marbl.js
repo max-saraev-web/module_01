@@ -70,6 +70,8 @@ window.MARBLE = (() => {
   const isOdd = num => num % 2 === 0;
 
   const game = (user = 5, bot = 5) => {
+    const initialSum = user + bot;
+
     const balance = {
       currentUser: user,
       currentBot: bot,
@@ -202,20 +204,26 @@ window.MARBLE = (() => {
               `);
         }
 
-        const userOdd = isOdd(+userNum);
-
-        const botBet = isOdd(random());
-        console.log('botBet: ', botBet);
-
         if (userNum === null) {
           return;
         }
+        userNum = Number(userNum);
+
+        const userOdd = isOdd(userNum);
+
+        const botBet = isOdd(random());
+
 
         counter++;
 
         if (userOdd === botBet) {
-          balance.currentUser -= +userNum;
-          balance.currentBot += +userNum;
+          if (balance.currentBot + userNum > initialSum) {
+            balance.currentBot = initialSum;
+            balance.currentUser = 0;
+          } else {
+            balance.currentUser -= userNum;
+            balance.currentBot += userNum;
+          }
           alert(`
             Ваша ставка проиграла!
             ---------------------
@@ -225,8 +233,13 @@ window.MARBLE = (() => {
           `);
           return start();
         } else {
-          balance.currentUser += +userNum;
-          balance.currentBot -= +userNum;
+          if (balance.currentBot + userNum > initialSum) {
+            balance.currentUser = initialSum;
+            balance.currentBot = 0;
+          } else {
+            balance.currentUser += userNum;
+            balance.currentBot -= userNum;
+          }
           alert(`
             Ваша ставка выиграла!
             --------------------
@@ -246,8 +259,13 @@ window.MARBLE = (() => {
         counter++;
 
         if (userBet === isOdd(botNum)) {
-          balance.currentUser += +botNum;
-          balance.currentBot -= +botNum;
+          if (balance.currentBot + botNum > initialSum) {
+            balance.currentUser = initialSum;
+            balance.currentBot = 0;
+          } else {
+            balance.currentUser += botNum;
+            balance.currentBot -= botNum;
+          }
           alert(`
             Ваша ставка выиграла!
             --------------------
@@ -257,8 +275,13 @@ window.MARBLE = (() => {
           `);
           return start();
         } else {
-          balance.currentUser -= +botNum;
-          balance.currentBot += +botNum;
+          if (balance.currentBot + botNum > initialSum) {
+            balance.currentBot = initialSum;
+            balance.currentUser = 0;
+          } else {
+            balance.currentUser -= botNum;
+            balance.currentBot += botNum;
+          }
           alert(`
             Ваша ставка проиграла!
             ---------------------
