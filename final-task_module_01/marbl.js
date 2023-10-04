@@ -217,6 +217,7 @@ window.MARBLE = (() => {
         counter++;
 
         if (userOdd === botBet) {
+          // * - бот победил и заберает шары на ходу пользователя
           if (balance.currentBot + userNum > initialSum) {
             balance.currentBot = initialSum;
             balance.currentUser = 0;
@@ -233,7 +234,9 @@ window.MARBLE = (() => {
           `);
           return start();
         } else {
-          if (balance.currentBot + userNum > initialSum) {
+          // * - пользователь победил и заберает шары на ходу пользователя
+          if (balance.currentBot + userNum > initialSum ||
+              balance.currentUser + userNum > initialSum) {
             balance.currentUser = initialSum;
             balance.currentBot = 0;
           } else {
@@ -259,6 +262,7 @@ window.MARBLE = (() => {
         counter++;
 
         if (userBet === isOdd(botNum)) {
+          // * - пользователь победил и заберает шары на ходу бота
           if (balance.currentBot + botNum > initialSum) {
             balance.currentUser = initialSum;
             balance.currentBot = 0;
@@ -275,6 +279,7 @@ window.MARBLE = (() => {
           `);
           return start();
         } else {
+          // * - бот победил и заберает шары на ходу бота
           if (balance.currentBot + botNum > initialSum) {
             balance.currentBot = initialSum;
             balance.currentUser = 0;
