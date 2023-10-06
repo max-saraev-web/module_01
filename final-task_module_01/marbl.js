@@ -9,6 +9,7 @@ window.MARBLE = (() => {
     total: 'итоговый счёт: ',
     playMore: 'Вы хотите продолжить игру ?',
     runOut: 'Шарики закончились!',
+    leave: 'Вы точно хотите выйти? ',
     RSP: {
       figures: [
         'камень',
@@ -28,6 +29,8 @@ window.MARBLE = (() => {
     },
   };
 
+  const {leave} = MESSAGES;
+
   // * - Возвращает число если передать число или null если не число
   const isNan = x => {
     if (!Number.isNaN(parseFloat(x)) && isFinite(x)) {
@@ -37,6 +40,8 @@ window.MARBLE = (() => {
     }
   };
 
+  const consciousExit = () => confirm(`${leave}`);
+
   const runOut = num => (num > 0 ?
     num :
     `${MESSAGES.runOut}`);
@@ -45,9 +50,16 @@ window.MARBLE = (() => {
     const str = prompt(arr + ' ?');
 
     if (str === null) {
-      counter++;
-      trigger = false;
-      return;
+      const exitConfirm = consciousExit;
+      const trueLeave = exitConfirm();
+
+      if (trueLeave) {
+        counter++;
+        trigger = false;
+        return;
+      } else if (trueLeave === false) {
+        return getFigure(arr, counter, trigger);
+      }
     }
 
     if (str.trim() === '') {
@@ -69,6 +81,32 @@ window.MARBLE = (() => {
 
   const isOdd = num => num % 2 === 0;
 
+  // * - получение числа от пользователя
+  const getUserNum = userBalls => {
+    const userNum = prompt(`
+      Введите количество шариков которые хотите
+      поставить на кон!
+      В данный момент вы можете поставить ${userBalls === 1 ?
+      'ТОЛЬКО 1 ШАРИК, это ПОСЛЕДНИЙ ШАНС!' : `от 1 до ${userBalls}`} 
+      `);
+
+    if (userNum === null) {
+      const exitConfirm = consciousExit;
+      const trueLeave = exitConfirm();
+      if (trueLeave) {
+        return null;
+      } else if (trueLeave === false) {
+        return getUserNum(userBalls);
+      }
+    }
+
+    if (!isNan(userNum) || +userNum < 0 || +userNum > userBalls) {
+      return getUserNum(userBalls);
+    } else {
+      return userNum;
+    }
+  };
+
   const game = (user = 5, bot = 5) => {
     const initialSum = user + bot;
 
@@ -81,6 +119,8 @@ window.MARBLE = (() => {
     let rspCounter = 0;
     let rspReturn = true;
     let oneMoreGameReturn = true;
+    let userWins = 0;
+    let botWins = 0;
 
     const rsp = () => {
       const {figures: figrs} = MESSAGES.RSP;
@@ -145,6 +185,8 @@ window.MARBLE = (() => {
         rspCounter = 0;
         balance.currentUser = user;
         balance.currentBot = bot;
+        botWins = 0;
+        userWins = 0;
         thisFn();
       } else {
         oneMoreGameReturn = false;
@@ -166,14 +208,22 @@ window.MARBLE = (() => {
         alert(`
           Помер!
           У вас не осталось шариков!
+          --------------------------
+          Итоговая статистика:
+          Побед у gpt: ${botWins}
+          Побед у пользователя: ${userWins}
         `);
         return oneMoreGame(start);
       }
 
       if (b <= 0) {
         alert(`
-          SkyNet повержен!
+          gpt повержен!
           У бота не осталось шариков!
+          --------------------------
+          Итоговая статистика:
+          Побед у gpt: ${botWins}
+          Побед у пользователя: ${userWins}
         `);
         return oneMoreGame(start);
       }
@@ -189,21 +239,8 @@ window.MARBLE = (() => {
       }
 
       if (!isOdd(counter)) {
-        let userNum = prompt(`
-          Введите количество шариков которые хотите
-          поставить на кон!
-          В данный момент вы можете поставить от 1 до ${u}
-          `);
-
-        while (!isNan(userNum) || +userNum < 0 || +userNum > u) {
-          if (userNum === null) break;
-
-          userNum = prompt(`Введите количество шариков которые хотите
-          поставить на кон!
-          В данный момент вы можете поставить от 1 до ${u}
-              `);
-        }
-
+        // ! - переписать на рекурсию
+        let userNum = getUserNum(u);
         if (userNum === null) {
           return;
         }
@@ -225,6 +262,7 @@ window.MARBLE = (() => {
             balance.currentUser -= userNum;
             balance.currentBot += userNum;
           }
+          botWins++;
           alert(`
             Ваша ставка проиграла!
             ---------------------
@@ -243,6 +281,7 @@ window.MARBLE = (() => {
             balance.currentUser += userNum;
             balance.currentBot -= userNum;
           }
+          userWins++;
           alert(`
             Ваша ставка выиграла!
             --------------------
@@ -270,6 +309,7 @@ window.MARBLE = (() => {
             balance.currentUser += botNum;
             balance.currentBot -= botNum;
           }
+          userWins++;
           alert(`
             Ваша ставка выиграла!
             --------------------
@@ -287,6 +327,7 @@ window.MARBLE = (() => {
             balance.currentUser -= botNum;
             balance.currentBot += botNum;
           }
+          botWins++;
           alert(`
             Ваша ставка проиграла!
             ---------------------
