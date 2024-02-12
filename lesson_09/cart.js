@@ -13,7 +13,7 @@ const cartMethods = {
   },
   calculateGoodsPrice() {
     this.totalPrice =
-      this.goods.reduce((acc, current) => acc + current.itemPrice, 0);
+      this.goods.reduce((acc, current) => acc + current.price, 0);
   },
   addGoods(obj) {
     this.goods.push(obj);
